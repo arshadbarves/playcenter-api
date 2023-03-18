@@ -152,3 +152,5 @@ REST_FRAMEWORK = {
 # Other settings
 
 AUTH_USER_MODEL = "account.User"
+
+CSRF_TRUSTED_ORIGINS = getenv('CSRF_TRUSTED_ORIGINS').split(',')
