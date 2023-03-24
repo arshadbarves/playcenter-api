@@ -4,17 +4,22 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 
 # User serializer
+
+
 class UserSerializer(serializers.ModelSerializer):
     # Meta class
     class Meta:
         # set model
         model = models.User
         # set fields
-        fields = ('id', 'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
+        fields = ('id', 'email', 'first_name', 'last_name',
+                  'is_staff', 'is_active', 'date_joined')
         # set read only fields
         read_only_fields = ('id', 'is_staff', 'is_active', 'date_joined')
 
 # User registration serializer
+
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     # Meta class
     class Meta:
@@ -23,7 +28,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         # set fields
         fields = ('id', 'email', 'first_name', 'last_name', 'password')
         # set extra kwargs
-        extra_kwargs = {'password': {'write_only': True}} # hide password field when returning data from API endpoint
+        # hide password field when returning data from API endpoint
+        extra_kwargs = {'password': {'write_only': True}}
 
     # create
     def create(self, validated_data):
@@ -31,8 +37,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user = models.User.objects.create_user(**validated_data)
         # return user
         return user
-    
+
 # User login serializer
+
+
 class UserLoginSerializer(serializers.Serializer):
     # email
     email = serializers.EmailField()
@@ -46,7 +54,8 @@ class UserLoginSerializer(serializers.Serializer):
         # get password
         password = data.get('password')
         # authenticate user
-        user = authenticate(request=self.context.get('request'), email=email, password=password)
+        user = authenticate(request=self.context.get(
+            'request'), email=email, password=password)
         # check if user is authenticated
         if not user:
             # raise error
@@ -61,6 +70,8 @@ class UserLoginSerializer(serializers.Serializer):
         return data
 
 # User password change serializer
+
+
 class UserPasswordChangeSerializer(serializers.Serializer):
     # old password
     old_password = serializers.CharField()
@@ -93,6 +104,8 @@ class UserPasswordChangeSerializer(serializers.Serializer):
         return data
 
 # User password reset serializer
+
+
 class UserPasswordResetSerializer(serializers.Serializer):
     # email
     email = serializers.EmailField()
@@ -111,8 +124,10 @@ class UserPasswordResetSerializer(serializers.Serializer):
         data['user'] = user
         # return data
         return data
-    
+
 # User password reset confirm serializer
+
+
 class UserPasswordResetConfirmSerializer(serializers.Serializer):
     # email
     email = serializers.EmailField()
@@ -153,17 +168,23 @@ class UserPasswordResetConfirmSerializer(serializers.Serializer):
         return data
 
 # User profile serializer
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     # Meta class
     class Meta:
         # set model
         model = models.User
         # set fields
-        fields = ('id', 'email', 'first_name', 'last_name', 'is_staff', 'is_active', 'date_joined')
+        fields = ('id', 'email', 'first_name', 'last_name',
+                  'is_staff', 'is_active', 'date_joined')
         # set read only fields
-        read_only_fields = ('id', 'email', 'is_staff', 'is_active', 'date_joined')
+        read_only_fields = ('id', 'email', 'is_staff',
+                            'is_active', 'date_joined')
 
 # User profile edit serializer
+
+
 class UserProfileEditSerializer(serializers.ModelSerializer):
     # Meta class
     class Meta:
@@ -175,6 +196,8 @@ class UserProfileEditSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'email')
 
 # User profile change password serializer
+
+
 class UserProfileChangePasswordSerializer(serializers.Serializer):
     # email
     email = serializers.EmailField()
@@ -205,8 +228,10 @@ class UserProfileChangePasswordSerializer(serializers.Serializer):
         data['user'] = user
         # return data
         return data
-    
+
 # User profile delete serializer
+
+
 class UserProfileDeleteSerializer(serializers.Serializer):
     # email
     email = serializers.EmailField()
@@ -220,7 +245,8 @@ class UserProfileDeleteSerializer(serializers.Serializer):
         # get password
         password = data.get('password')
         # authenticate user
-        user = authenticate(request=self.context.get('request'), email=email, password=password)
+        user = authenticate(request=self.context.get(
+            'request'), email=email, password=password)
         # check if user is authenticated
         if not user:
             # raise error
@@ -233,8 +259,10 @@ class UserProfileDeleteSerializer(serializers.Serializer):
         data['user'] = user
         # return data
         return data
-    
+
 # User profile delete confirm serializer
+
+
 class UserProfileDeleteConfirmSerializer(serializers.Serializer):
     # email
     email = serializers.EmailField()

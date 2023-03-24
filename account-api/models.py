@@ -99,8 +99,6 @@ class Profile(models.Model):
     # set phone number
     phone_number = models.CharField(
         _('phone number'), max_length=20, blank=True)
-    # set website
-    website = models.URLField(_('website'), blank=True)
     # set address
     address = models.CharField(_('address'), max_length=255, blank=True)
     # set city

@@ -1,0 +1,103 @@
+<!-- Base Email Template -->
+{% load static %}
+
+<!-- Styles -->
+<style type="text/css">
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    .col-md-12 {
+        width: 100%;
+        float: left;
+    }
+
+    .header {
+        background-color: #fff;
+        padding: 20px 0;
+    }
+
+    .header .logo {
+        display: block;
+        text-align: center;
+    }
+
+    .header .logo img {
+        max-width: 100%;
+    }
+
+    .content {
+        background-color: #fff;
+        padding: 20px 0;
+    }
+
+    .content h1 {
+        text-align: center;
+        font-size: 24px;
+        margin: 0;
+    }
+
+    .content p {
+        text-align: center;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .footer {
+        background-color: #fff;
+        padding: 20px 0;
+    }
+
+    .footer p {
+        text-align: center;
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
+
+<!-- Header -->
+<div class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header-inner">
+                    <a href="{{ site_url }}" class="logo">
+                        <img src="{{ site_logo }}" alt="{{ site_name }}" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Header -->
+
+<!-- Content -->
+{% block content %}
+{% endblock %}
+<!-- End Content -->
+
+<!-- Footer -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="footer-inner">
+                    <p>{{ site_name }} &copy; {{ current_year }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Footer -->

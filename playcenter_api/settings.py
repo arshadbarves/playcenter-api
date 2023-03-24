@@ -38,25 +38,36 @@ ALLOWED_HOSTS = getenv('ALLOWED_HOSTS').split(',')
 # Application definition
 
 INSTALLED_APPS = [
+    # third party apps
+    'whitenoise.runserver_nostatic',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djongo',
+    'oauth2_provider',
+    "django_celery_beat",
+
+    # local apps
+    'account',
+    'api',
+    'home',
+
+    # django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
-
-    # third party apps
-    'rest_framework',
-    'rest_framework.authtoken',
-    'djongo',
-    
-    # local apps
-    'account',
-    'home',
 ]
 
 MIDDLEWARE = [
+    # third party middleware
+    'corsheaders.middleware.CorsMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
+    # django middleware
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,7 +75,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'oauth2_provider.backends.OAuth2Backend'
 ]
 
 ROOT_URLCONF = 'playcenter_api.urls'
@@ -72,7 +87,7 @@ ROOT_URLCONF = 'playcenter_api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -92,14 +107,14 @@ WSGI_APPLICATION = 'playcenter_api.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'djongo',
-            'NAME': getenv('DB_NAME'),
-            'ENFORCE_SCHEMA': False,
-            'CLIENT': {
-                'host': getenv('DB_HOST_STRING'),
-            }  
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': getenv('DB_NAME'),
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+            'host': getenv('DB_HOST_STRING'),
         }
+    }
 }
 
 # Password validation
@@ -140,7 +155,7 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -153,11 +168,71 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
 
 # Other settings
 
+SITE_NAME = 'Playcenter Games'
+
+SECURE_SSL_REDIRECT = getenv('SECURE_SSL_REDIRECT')
+
+DOMAIN_NAME = getenv('DOMAIN_NAME')
+
 AUTH_USER_MODEL = "account.User"
 
 CSRF_TRUSTED_ORIGINS = getenv('CSRF_TRUSTED_ORIGINS').split(',')
+
+
+# OAUTH2
+
+OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    # "OIDC_USERINFO": "oidc_provider.views.UserInfoView",
+    "OIDC_RSA_PRIVATE_KEY": getenv("OIDC_RSA_PRIVATE_KEY"),
+    "OAUTH2_VALIDATOR_CLASS": "oauth2_provider.oauth2_validators.OAuth2Validator",
+    "OIDC_ID_TOKEN_EXPIRATION": 3600,
+    "PKCE_REQUIRED": True,
+    "SCOPES": {
+        "openid": "OpenID Connect scope",
+        "profile": "User profile scope",
+        "email": "User email scope",
+        "groups": "User groups scope",
+    },
+}
+
+# CORS
+
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# EMAIL
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = getenv('DEFAULT_FROM_EMAIL')
+EMAIL_HOST = getenv('EMAIL_HOST')
+EMAIL_PORT = getenv('EMAIL_PORT')
+EMAIL_HOST_USER = getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+# Application definition
+DOMAIN_NAME = getenv('DOMAIN_NAME')
+API_URL = 'https://' + DOMAIN_NAME + '/api/v1/'

@@ -1,244 +1,93 @@
-from rest_framework import generics, permissions, status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.contrib.auth.hashers import make_password
-from . import models, serializers
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+import requests
+from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login, logout
+from django.views import View
+
+from account.models import User
+from playcenter_api import settings
 
 
-# Welcome view
-class WelcomeView(APIView):
-    
-        permission_classes = (permissions.AllowAny,)
-    
-        def get(self, request):
-            # return response
-            return Response(
-                data={
-                    'message': 'Welcome to the API.'
-                },
-                status=status.HTTP_200_OK
-            )
+login_template = 'account/login.html'
+register_template = 'account/register.html'
 
-# User registration view
-class UserRegistrationView(APIView):
+api_url = settings.API_URL + 'login/'
 
-    permission_classes = (permissions.AllowAny,)
-    serializer_class = serializers.UserRegistrationSerializer
+# Welcome View
 
-    def post(self, request):
-        # get serializer
-        serializer = self.serializer_class(data=request.data)
-        # validate serializer
-        serializer.is_valid(raise_exception=True)
-        # get validated data
-        validated_data = serializer.validated_data
-        # create user
-        user = models.User.objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
-        )
-        # create token
-        token = Token.objects.create(user=user)
-        # return response
-        return Response(
-            data={
-                'token': token.key,
-                'user_id': user.pk,
-                'email': user.email
-            },
-            status=status.HTTP_201_CREATED
-        )
 
-# User login view
-class UserLoginView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    serializer_class = serializers.UserLoginSerializer
+class WelcomeView(View):
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return render(request, 'account/home.html', {'user': request.user})
+        else:
+            return redirect('login')
+
+
+# Login View
+
+
+class LoginView(View):
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return render(request, login_template)
 
     def post(self, request):
-        # get serializer
-        serializer = self.serializer_class(data=request.data)
-        # validate serializer
-        serializer.is_valid(raise_exception=True)
-        # get validated data
-        validated_data = serializer.validated_data
-        # get user
-        user = validated_data['user']
-        # create token
-        token, _ = Token.objects.get_or_create(user=user)
-        # return response
-        return Response(
-            data={
-                'token': token.key,
-                'user_id': user.pk,
-                'email': user.email
-            },
-            status=status.HTTP_200_OK
-        )
+        username = request.POST['username']
+        password = request.POST['password']
+        data = {
+            'username': username,
+            'password': password
+        }
+        response = requests.post(api_url, data=data)
+        if response.status_code == 200:
+            user = authenticate(request, username=username, password=password)
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, login_template, {'error': 'Invalid username or password'})
 
-# User logout view
-class UserLogoutView(APIView):
+# Logout View
 
-    permission_classes = (IsAuthenticated,)
 
-    def post(self, request):
-        # get token
-        request.user.auth_token.delete()
-        # return response
-        return Response(status=status.HTTP_204_NO_CONTENT)
+class LogoutView(View):
 
-# User view
-class UserView(generics.RetrieveAPIView):
+    def get(self, request):
+        logout(request)
+        return redirect('home')
 
-    permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.UserSerializer
+# Create Account View
 
-    def get_object(self):
-        # get user
-        user = self.request.user
-        # return user
-        return user
 
-# User update view
-class UserUpdateView(generics.UpdateAPIView):
+class CreateAccountView(View):
 
-    permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.UserSerializer
-
-    def get_object(self):
-        # get user
-        user = self.request.user
-        # return user
-        return user
-
-    def update(self, request, *args, **kwargs):
-        # get user
-        user = self.get_object()
-        # get serializer
-        serializer = self.serializer_class(user, data=request.data)
-        # validate serializer
-        serializer.is_valid(raise_exception=True)
-        # get validated data
-        validated_data = serializer.validated_data
-        # update user
-        user.email = validated_data['email']
-        user.first_name = validated_data['first_name']
-        user.last_name = validated_data['last_name']
-        user.save()
-        # return response
-        return Response(
-            data=serializers.UserSerializer(user).data,
-            status=status.HTTP_200_OK
-        )
-
-# User password update view
-class UserPasswordUpdateView(generics.UpdateAPIView):
-    
-        permission_classes = (IsAuthenticated,)
-        serializer_class = serializers.UserPasswordChangeSerializer
-    
-        def get_object(self):
-            # get user
-            user = self.request.user
-            # return user
-            return user
-    
-        def update(self, request, *args, **kwargs):
-            # get user
-            user = self.get_object()
-            # get serializer
-            serializer = self.serializer_class(user, data=request.data)
-            # validate serializer
-            serializer.is_valid(raise_exception=True)
-            # get validated data
-            validated_data = serializer.validated_data
-            # update user password
-            user.password = make_password(validated_data['password'])
-            user.save()
-            # return response
-            return Response(
-                data=serializers.UserSerializer(user).data,
-                status=status.HTTP_200_OK
-            )
-
-# User delete view
-class UserDeleteView(generics.DestroyAPIView):
-
-    permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.UserSerializer
-
-    def get_object(self):
-        # get user
-        user = self.request.user
-        # return user
-        return user
-
-    def destroy(self, request, *args, **kwargs):
-        # get user
-        user = self.get_object()
-        # delete user
-        user.delete()
-        # return response
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-# User list view
-class UserListView(generics.ListAPIView):
-
-    permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.UserSerializer
-
-    def get_queryset(self):
-        # get users
-        users = models.User.objects.all()
-        # return users
-        return users
-    
-# User password reset view
-class UserPasswordResetView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    serializer_class = serializers.UserPasswordResetSerializer
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('home')
+        else:
+            return render(request, register_template)
 
     def post(self, request):
-        # get serializer
-        serializer = self.serializer_class(data=request.data)
-        # validate serializer
-        serializer.is_valid(raise_exception=True)
-        # get validated data
-        validated_data = serializer.validated_data
-        # get user
-        user = validated_data['user']
-        # create token
-        token = Token.objects.create(user=user)
-        # return response
-        return Response(
-            data={
-                'token': token.key,
-                'user_id': user.pk,
-                'email': user.email
-            },
-            status=status.HTTP_200_OK
-        )
-
-# User password reset confirm view
-class UserPasswordResetConfirmView(APIView):
-    permission_classes = (permissions.AllowAny,)
-    serializer_class = serializers.UserPasswordResetConfirmSerializer
-
-    def post(self, request):
-        # get serializer
-        serializer = self.serializer_class(data=request.data)
-        # validate serializer
-        serializer.is_valid(raise_exception=True)
-        # get validated data
-        validated_data = serializer.validated_data
-        # get user
-        user = validated_data['user']
-        # update user password
-        user.password = make_password(validated_data['password'])
-        user.save()
-        # return response
-        return Response(status=status.HTTP_200_OK)
-
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        data = {
+            'username': username,
+            'password': password,
+            'email': email,
+            'first_name': first_name,
+            'last_name': last_name
+        }
+        response = requests.post(api_url, data=data)
+        if response.status_code == 201:
+            user = User.objects.create_user(**data)
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, register_template, {'error': 'Invalid username or password'})
