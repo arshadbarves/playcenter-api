@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'account',
     'api',
     'home',
+    'playcenter',
 
     # django apps
     'django.contrib.admin',

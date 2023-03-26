@@ -23,5 +23,6 @@ urlpatterns = [
     path('api/' + settings.API_VERSION + '/', include('api.urls'), name='api'),
     path('account/', include('account.urls'), name='accounts'),
     path('', include('home.urls'), name='home'),
+    path('playcenter/', include('playcenter.urls'), name='playcenter'),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
