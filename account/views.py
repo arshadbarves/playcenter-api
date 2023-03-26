@@ -37,14 +37,16 @@ class LoginView(View):
             return render(request, sign_in_template)
 
     def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+        messages = []
+        email = request.POST.get("email", None)
+        password = request.POST.get("password", None)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect(home)
         else:
-            return render(request, sign_in_template, {'error': 'Invalid username or password'})
+            messages.append('Invalid username or password')
+            return render(request, sign_in_template, {'messages': messages})
 
 # Logout View
 
@@ -67,21 +69,62 @@ class CreateAccountView(View):
             return render(request, create_account_template)
 
     def post(self, request):
-        username = request.POST['username']
-        password = request.POST['password']
-        email = request.POST['email']
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
+        messages = []
+        first_name = request.POST.get("first_name", None)
+        last_name = request.POST.get("last_name", None)
+        email = request.POST.get("email", None).lower()
+        password = request.POST.get("password", None)
+        password2 = request.POST.get("confirm_password", None)
+
+        # Validate email addresses
+        if not email:
+            messages.append('Email is required')
+            return render(request, create_account_template, {'messages': messages})
+        else:
+            r = requests.get(
+                f"https://isitarealemail.com/api/email/validate?email={email}")
+            if r.json()['status'] != 'valid':
+                messages.append('Invalid email address')
+                return render(request, create_account_template, {'messages': messages})
+
+        # Validate user input
+        if not first_name:
+            messages.append('First name is required')
+            return render(request, create_account_template, {'messages': messages})
+
+        if not last_name:
+            messages.append('Last name is required')
+            return render(request, create_account_template, {'messages': messages})
+
+        if not email:
+            messages.append('Email is required')
+            return render(request, create_account_template, {'messages': messages})
+
+        if not password:
+            messages.append('Password is required')
+            return render(request, create_account_template, {'messages': messages})
+
+        if not password2:
+            messages.append('Confirm password is required')
+            return render(request, create_account_template, {'messages': messages})
+
+        if User.objects.filter(email=email).exists():
+            messages.append('Email already exists')
+            return render(request, create_account_template, {'messages': messages})
+
+        if password != password2:
+            messages.append('Passwords do not match')
+            return render(request, create_account_template, {'messages': messages})
 
         user = User.objects.create_user(
-            username=username, password=password, email=email, first_name=first_name, last_name=last_name)
-        user.save()
-        user = authenticate(request, username=username, password=password)
+            email=email, password=password, first_name=first_name, last_name=last_name)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect(home)
         else:
-            return render(request, create_account_template, {'error': 'New user could not be created'})
+            messages.append('Invalid username or password')
+            return render(request, create_account_template, {'messages': messages})
 
 # Password Reset View
 

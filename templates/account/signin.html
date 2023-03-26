@@ -10,13 +10,20 @@
         <p class="card-subtitle">with your Playcenter account</p>
       </div>
       <div class="card-body">
-        <form class="needs-validation" novalidate method="post" action="#">
+        {% if messages %}
+        <div class="alert alert-danger" role="alert">
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <form class="needs-validation" novalidate method="post" action="/account/signin/">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ next }}" />
           <div class="row">
             <div class="col-md-12 mb-3">
               <div class="form-floating">
-                <input type="email" class="form-control" id="email" placeholder="Email" required />
+                <input type="email" name="email" class="form-control" id="email" placeholder="Email" required />
                 <label for="email">Email</label>
                 <div class="invalid-feedback">
                   Please enter a valid email.
@@ -27,7 +34,8 @@
           <div class="row">
             <div class="col-md-12 mb-3">
               <div class="form-floating">
-                <input type="password" class="form-control" placeholder="Password" id="password" required />
+                <input type="password" name="password" class="form-control" placeholder="Password" id="password"
+                  required />
                 <label for="password">Password</label>
                 <div class="invalid-feedback">
                   Please enter a valid password.

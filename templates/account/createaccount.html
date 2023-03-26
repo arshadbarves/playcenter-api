@@ -11,13 +11,21 @@
         <p class="card-subtitle">with your Playcenter account</p>
       </div>
       <div class="card-body">
-        <form class="needs-validation" novalidate method="post" action="api/v1/createaccount">
+        {% if messages %}
+        <div class="alert alert-danger" role="alert">
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <form class="needs-validation" novalidate method="post" action="/account/createaccount/">
           {% csrf_token %}
           <div class="row">
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="firstname" placeholder="First name" required>
-                <label for="firstname">First name</label>
+                <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First name"
+                  required>
+                <label for="first_name">First name</label>
                 <div class="invalid-feedback">
                   Please provide a valid first name.
                 </div>
@@ -25,8 +33,9 @@
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="text" class="form-control" id="lastname" placeholder="Last name" required>
-                <label for="lastname">Last name</label>
+                <input type="text" name="last_name" class="form-control" id="last_name" placeholder="Last name"
+                  required>
+                <label for="last_name">Last name</label>
                 <div class="invalid-feedback">
                   Please provide a valid last name.
                 </div>
@@ -36,7 +45,7 @@
           <div class="row">
             <div class="col-md-12 mb-3">
               <div class="form-floating">
-                <input type="email" class="form-control" id="email" placeholder="Email" required>
+                <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
                 <label for="email">Email</label>
                 <div class="invalid-feedback">
                   Please provide a valid email.
@@ -47,7 +56,8 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password"
+                  required>
                 <label for="password">Password</label>
                 <div class="invalid-feedback">
                   Please provide a valid password.
@@ -56,8 +66,8 @@
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-floating">
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password"
-                  required>
+                <input type="password" name="confirm_password" class="form-control" id="confirmPassword"
+                  placeholder="Confirm Password" required>
                 <label for="confirmPassword">Confirm Password</label>
                 <div class="invalid-feedback">
                   Please provide a valid password.
