@@ -5,18 +5,18 @@ urlpatterns = [
     # path for welcome
     path('home/', views.WelcomeView.as_view(), name='home'),
     # path for login
-    path('login/', views.LoginView.as_view(), name='login'),
+    path('signin/', views.LoginView.as_view(), name='signin'),
     # path for registration
-    path('register/', views.CreateAccountView.as_view(), name='register'),
+    path('createaccount/', views.CreateAccountView.as_view(), name='create account'),
     # # path for password change
     # path('password/change/', views.UserPasswordUpdateView.as_view(),
     #      name='password_change'),
-    # # path for password reset
-    # path('password/reset/', views.UserPasswordResetView.as_view(),
-    #      name='password_reset'),
-    # # path for password reset confirm
-    # path('password/reset/confirm/', views.UserPasswordResetConfirmView.as_view(),
-    #      name='password_reset_confirm'),
+    # path for password reset
+    path('password/reset/', views.UserPasswordResetView.as_view(),
+         name='password_reset'),
+    # path for password reset confirm
+    path('password/reset/confirm/', views.UserPasswordResetConfirmView.as_view(),
+         name='password_reset_confirm'),
     # # path for profile
     # path('profile/', views.UserView.as_view(), name='profile'),
     # # path for profile edit

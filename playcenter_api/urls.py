@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from playcenter_api import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('api.urls'), name='api'),
+    path('api/' + settings.API_VERSION + '/', include('api.urls'), name='api'),
     path('account/', include('account.urls'), name='accounts'),
     path('', include('home.urls'), name='home'),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),

@@ -95,6 +95,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'account.context_processors.get_settings',
             ],
         },
     },
@@ -235,4 +236,11 @@ EMAIL_USE_SSL = False
 
 # Application definition
 DOMAIN_NAME = getenv('DOMAIN_NAME')
-API_URL = 'https://' + DOMAIN_NAME + '/api/v1/'
+API_VERSION = 'v1'
+
+# URLS
+API_URL = 'https://' + DOMAIN_NAME + '/api/' + API_VERSION + '/'
+HOME_URL = getenv('HOME_URL')
+TERMS_URL = getenv('TERMS_URL')
+PRIVACY_URL = getenv('PRIVACY_URL')
+CONTACT_URL = getenv('CONTACT_URL')

@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+
+.account-card {
+    margin: 0 auto;
+}
+
+.account-card .btn-link {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.account-card .btn-link:hover {
+    background-color: #1973e80e;
+}
+
+.account-card .btn-link:focus {
+    text-decoration: underline;
+}
+
+.account-card .card-header {
+    background-color: transparent;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 0;
+    padding: 40px 0;
+}
+
+.account-card .card-subtitle {
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+.account-card .form-check-label {
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+/* Pages */
+.signin-page {
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+    height: 100vh;
+}
+
+.signin-page .account-card {
+    max-width: 400px;
+}
+
+.create-account-page {
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+    height: 100vh;
+}
+
+.create-account-page .account-card {
+    max-width: 600px;
+}
