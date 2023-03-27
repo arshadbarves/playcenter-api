@@ -9,7 +9,7 @@ from .serializers import *
 class GameAPI(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = GameDetail.objects.all()
-    serializer_class = GameDetailsSerializer
+    serializer_class = GameListSerializer
 
 
 # Game API to get specific game

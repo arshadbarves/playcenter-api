@@ -34,9 +34,6 @@ class GameDetail(models.Model):
         ('Trivia', 'Trivia'),
         ('Word', 'Word'),
         ('Other', 'Other'),
-        ('MMO', 'MMO'),
-        ('MOBA', 'MOBA'),
-        ('Roguelike', 'Roguelike'),
     )
 
     GAME_AGE_RATING_CHOICES = (
@@ -55,11 +52,24 @@ class GameDetail(models.Model):
         ('Alpha', 'Alpha'),
         ('Demo', 'Demo'),
     )
+    LANGUAGE_CHOICES = (
+        ('English', 'English'),
+        ('French', 'French'),
+        ('German', 'German'),
+        ('Spanish', 'Spanish'),
+        ('Italian', 'Italian'),
+        ('Japanese', 'Japanese'),
+        ('Korean', 'Korean'),
+        ('Chinese', 'Chinese'),
+        ('Russian', 'Russian'),
+        ('Other', 'Other'),
+    )
 
     game_id = models.AutoField(primary_key=True)
     game_name = models.CharField(max_length=100)
-    game_description = models.CharField(max_length=1000)
+    game_description = models.TextField()
     game_spotlight_image = models.ImageField(upload_to='game_images')
+    # Mutiple images for a game
     game_image = models.ImageField(upload_to='game_images')
     game_video = models.URLField(max_length=1000)
     game_price = models.DecimalField(
@@ -73,8 +83,9 @@ class GameDetail(models.Model):
     game_developer = models.CharField(max_length=100)
     game_platform = models.CharField(
         max_length=100, choices=GAME_PLATFORM_CHOICES, default='PC')
-    game_language = models.CharField(max_length=100)
-    game_system_requirements = models.CharField(max_length=1000)
+    game_language = models.CharField(
+        max_length=100, choices=LANGUAGE_CHOICES, default='English')
+    game_system_requirements = models.TextField()
     game_tags = models.CharField(max_length=1000, default='None')
     game_age_rating = models.CharField(
         max_length=100, choices=GAME_AGE_RATING_CHOICES, default='3+')
@@ -86,34 +97,3 @@ class GameDetail(models.Model):
 
     def __str__(self):
         return self.game_name
-
-
-# Game Review Model
-class GameReview(models.Model):
-    game = models.ForeignKey(GameDetail, on_delete=models.CASCADE)
-    review = models.CharField(max_length=1000)
-    rating = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    review_date = models.DateField()
-
-    def __str__(self):
-        return self.review
-
-# Game Screenshot Model
-
-
-class GameScreenshot(models.Model):
-    game = models.ForeignKey(GameDetail, on_delete=models.CASCADE)
-    screenshot = models.ImageField(upload_to='game_screenshots')
-
-    def __str__(self):
-        return self.screenshot
-
-# Game Trailer Model
-
-
-class GameTrailer(models.Model):
-    game = models.ForeignKey(GameDetail, on_delete=models.CASCADE)
-    trailer = models.FileField(upload_to='game_trailers')
-
-    def __str__(self):
-        return self.trailer

@@ -23,26 +23,12 @@ class GameDetailsSerializer(serializers.ModelSerializer):
         game.save()
         return game
 
-# Game Review Serializer
+# Game List Serializer
 
 
-class GameReviewSerializer(serializers.ModelSerializer):
+class GameListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = GameReview
-        fields = '__all__'
-
-# Game Screenshot Serializer
-
-
-class GameScreenshotSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GameScreenshot
-        fields = '__all__'
-
-# Game Trailer Serializer
-
-
-class GameTrailerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GameTrailer
-        fields = '__all__'
+        model = GameDetail
+        fields = ('game_id', 'game_name', 'game_description',
+                  'game_spotlight_image', 'game_status')
+        read_only_fields = ('game_id',)
