@@ -130,5 +130,4 @@ dmypy.json
 
 
 # Folder for the project
-game_images/
-game_spotlight_images/
+media/
