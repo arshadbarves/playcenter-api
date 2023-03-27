@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from playcenter_api import settings
 
@@ -25,4 +27,10 @@ urlpatterns = [
     path('', include('home.urls'), name='home'),
     path('playcenter/', include('playcenter.urls'), name='playcenter'),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Configure Admin Site
+
+admin.site.site_header = "Playcenter Admin"
+admin.site.site_title = "Playcenter Admin Portal"
+admin.site.index_title = "Welcome to Playcenter Admin Portal"

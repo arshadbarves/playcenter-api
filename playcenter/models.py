@@ -68,9 +68,11 @@ class GameDetail(models.Model):
     game_id = models.AutoField(primary_key=True)
     game_name = models.CharField(max_length=100)
     game_description = models.TextField()
-    game_spotlight_image = models.ImageField(upload_to='game_images')
+    game_spotlight_image = models.ImageField(
+        upload_to='game/images/game_spotlight_images', unique=True)
     # Mutiple images for a game
-    game_image = models.ImageField(upload_to='game_images')
+    game_image = models.ImageField(
+        upload_to='game/images/game_images', unique=True)
     game_video = models.URLField(max_length=1000)
     game_price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0)

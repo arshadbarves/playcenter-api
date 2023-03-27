@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ game.title }}</h1>
+<p>{{ game.description }}</p>
+
+<h2>Game Images:</h2>
+{% for game_image in game_images %}
+<img src="{{ game_image.game_image.url }}" alt="{{ game.title }} Image">
+{% endfor %}
+
+<h2>Game Spotlight Images:</h2>
+{% for spotlight_image in game_spotlight_images %}
+<img src="{{ spotlight_image.game_spotlight_image.url }}" alt="{{ game.title }} Spotlight Image">
+{% endfor %}
+{% endblock %}
