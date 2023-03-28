@@ -67,6 +67,7 @@ class GameDetail(models.Model):
 
     game_id = models.AutoField(primary_key=True)
     game_name = models.CharField(max_length=100)
+    game_short_description = models.CharField(max_length=1000, default='None')
     game_description = models.TextField()
     game_spotlight_image = models.ImageField(
         upload_to='game/images/game_spotlight_images', unique=True)

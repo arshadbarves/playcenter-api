@@ -29,6 +29,6 @@ class GameDetailsSerializer(serializers.ModelSerializer):
 class GameListSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameDetail
-        fields = ('game_id', 'game_name', 'game_description',
-                  'game_spotlight_image', 'game_status')
+        fields = ('game_id', 'game_name', 'game_short_description',
+                  'game_spotlight_image', 'game_status', 'game_release_date')
         read_only_fields = ('game_id',)
