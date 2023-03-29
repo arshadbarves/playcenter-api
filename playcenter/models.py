@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 # Game Details Model
 
@@ -70,10 +71,10 @@ class GameDetail(models.Model):
     game_short_description = models.CharField(max_length=1000, default='None')
     game_description = models.TextField()
     game_spotlight_image = models.ImageField(
-        upload_to='game/images/game_spotlight_images', unique=True)
+        upload_to='game/images/game_spotlight_images', unique=True, storage=MediaCloudinaryStorage())
     # Mutiple images for a game
     game_image = models.ImageField(
-        upload_to='game/images/game_images', unique=True)
+        upload_to='game/images/game_images', unique=True, storage=MediaCloudinaryStorage())
     game_video = models.URLField(max_length=1000)
     game_price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0)

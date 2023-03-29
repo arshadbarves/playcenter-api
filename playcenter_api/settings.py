@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djongo',
     'oauth2_provider',
-    "django_celery_beat",
+    'django_celery_beat',
+
 
     # local apps
     'account',
@@ -60,6 +61,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third party apps
+    'cloudinary_storage',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -156,7 +161,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Comment out the following line if you are not using Cloudinary
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
@@ -248,3 +254,12 @@ HOME_URL = getenv('HOME_URL')
 TERMS_URL = getenv('TERMS_URL')
 PRIVACY_URL = getenv('PRIVACY_URL')
 CONTACT_URL = getenv('CONTACT_URL')
+
+# CDN
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': getenv('CLOUD_NAME'),
+    'API_KEY': getenv('API_KEY'),
+    'API_SECRET': getenv('API_SECRET')
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

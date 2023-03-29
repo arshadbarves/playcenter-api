@@ -27,7 +27,7 @@ urlpatterns = [
     path('', include('home.urls'), name='home'),
     path('playcenter/', include('playcenter.urls'), name='playcenter'),
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 # Configure Admin Site
 
