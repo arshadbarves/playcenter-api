@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils import timezone
+from django.dispatch import receiver
+from django.db.models.signals import pre_save, pre_delete
 from cloudinary_storage.storage import MediaCloudinaryStorage
+
+# Create storage instance for cloudinary
+cloudinary_storage = MediaCloudinaryStorage()
 
 # Game Details Model
 
@@ -71,10 +76,10 @@ class GameDetail(models.Model):
     game_short_description = models.CharField(max_length=1000, default='None')
     game_description = models.TextField()
     game_spotlight_image = models.ImageField(
-        upload_to='game/images/game_spotlight_images', unique=True, storage=MediaCloudinaryStorage())
+        upload_to='game/images/game_spotlight_images', unique=True, storage=cloudinary_storage)
     # Mutiple images for a game
     game_image = models.ImageField(
-        upload_to='game/images/game_images', unique=True, storage=MediaCloudinaryStorage())
+        upload_to='game/images/game_images', unique=True, storage=cloudinary_storage)
     game_video = models.URLField(max_length=1000)
     game_price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0)
@@ -100,5 +105,34 @@ class GameDetail(models.Model):
     game_created_date = models.DateTimeField(default=timezone.now)
     game_updated_date = models.DateTimeField(default=timezone.now)
 
+    # update game and spotlight image in cloudinary when game details are deleted
+    @receiver(pre_delete, sender='playcenter.GameDetail')
+    def auto_delete_file_on_delete(sender, instance, **kwargs):
+        cloudinary_storage.delete(instance.game_image.name)
+        cloudinary_storage.delete(instance.game_spotlight_image.name)
+        instance.game_image.delete(save=False)
+        instance.game_spotlight_image.delete(save=False)
+
+    # update game and spotlight image in cloudinary when game details are updated
+    @ receiver(pre_save, sender='playcenter.GameDetail')
+    def auto_delete_file_on_change(sender, instance, **kwargs):
+        if not instance.pk:
+            return False
+
+        try:
+            old_file = sender.objects.get(pk=instance.pk).game_image
+            new_file = instance.game_image
+            old_file2 = sender.objects.get(pk=instance.pk).game_spotlight_image
+            new_file2 = instance.game_spotlight_image
+            if not old_file == new_file:
+                old_file.delete(save=False)
+            if not old_file2 == new_file2:
+                old_file2.delete(save=False)
+        except sender.DoesNotExist:
+            return False
+
     def __str__(self):
         return self.game_name
+
+    class Meta:
+        ordering = ['-game_created_date']
