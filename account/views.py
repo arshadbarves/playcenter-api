@@ -164,4 +164,11 @@ class UserPasswordResetConfirmView(View):
 class CallbackView(View):
 
     def get(self, request):
-        return render(request, 'account/callback.html')
+        # Get the code from the request
+        code = request.GET.get('code', None)
+        if code:
+            authorized = True
+            return render(request, 'account/callback.html', {'authorized': authorized})
+        else:
+            authorized = False
+            return render(request, 'account/callback.html', {'authorized': authorized})
