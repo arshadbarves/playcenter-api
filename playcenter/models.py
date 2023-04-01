@@ -96,6 +96,7 @@ class GameDetail(models.Model):
     game_link = models.URLField(max_length=1000)
     game_status = models.CharField(
         max_length=100, choices=GAME_STATUS_CHOICES, default='Coming Soon')
+    game_size = models.CharField(max_length=100, default='None')
     game_created_date = models.DateTimeField(default=timezone.now)
     game_updated_date = models.DateTimeField(default=timezone.now)
 
