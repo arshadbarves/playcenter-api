@@ -157,3 +157,11 @@ class UserPasswordResetConfirmView(View):
             return redirect('home')
         else:
             return render(request, 'account/password_reset_confirm.html', {'error': 'Passwords do not match'})
+
+# Callback View
+
+
+class CallbackView(View):
+
+    def get(self, request):
+        return render(request, 'account/callback.html')

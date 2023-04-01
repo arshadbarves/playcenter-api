@@ -26,4 +26,6 @@ urlpatterns = [
     #      name='profile_delete'),
     # # path for logout
     # path('logout/', views.UserLogoutView.as_view(), name='logout'),
+    # path for callback
+    path('callback/', views.CallbackView.as_view(), name='callback'),
 ]
