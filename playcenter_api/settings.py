@@ -209,7 +209,8 @@ OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,
     # "OIDC_USERINFO": "oidc_provider.views.UserInfoView",
     "OIDC_RSA_PRIVATE_KEY": getenv("OIDC_RSA_PRIVATE_KEY"),
-    "OAUTH2_VALIDATOR_CLASS": "oauth2_provider.oauth2_validators.OAuth2Validator",
+    # "OAUTH2_VALIDATOR_CLASS": "oauth2_provider.oauth2_validators.OAuth2Validator",
+    "OAUTH2_VALIDATOR_CLASS": "account.oauth2_validators.CustomOAuth2Validator",
     "OIDC_ID_TOKEN_EXPIRATION": 3600,
     "PKCE_REQUIRED": True,
     "SCOPES": {
