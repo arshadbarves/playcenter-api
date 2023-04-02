@@ -208,7 +208,58 @@ CSRF_TRUSTED_ORIGINS = getenv('CSRF_TRUSTED_ORIGINS').split(',')
 OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,
     # "OIDC_USERINFO": "oidc_provider.views.UserInfoView",
-    "OIDC_RSA_PRIVATE_KEY": getenv("OIDC_RSA_PRIVATE_KEY"),
+    # "OIDC_RSA_PRIVATE_KEY": getenv("OIDC_RSA_PRIVATE_KEY"),
+    "OIDC_RSA_PRIVATE_KEY": '''-----BEGIN RSA PRIVATE KEY-----
+    MIIJKAIBAAKCAgEApsuSsp+XJcj9MvbyBSHjkySD3LWMG+isbHqQwEmB0MFTmuXU
+    jystSc4rsp6O/EqQ+AdTROltHxVKvVRq5510vCwlhBGphccFVZC37K9StcDoIgnW
+    / U9d13EL9t3OI0XGjho6747nbo4D/bwxeeAX6bOmj1sfpeNL+ObJxpZLj3XR4psz
+    wzqjosjQXbzS71OXTf8o7XvHPoF3W+QqG4+nQYjZ/GX7yBAvqQ9ngNC0NV4bqWQf
+    n2gA+elujkJiAyypPnD0C+MiafwfClPOPcc7GoMfmVzScWLzLj1lped9VQOKoLDM
+    HdfGSWcHUg8PFDZp6XzYqbaBi3vyzSWRuOZ+QLHCu3YY/DrSp0UrRSpubNXvJYSp
+    dpB8cd5msvqRNVqkj3XxvCtif2HuFNvmZU8vtKvP4rj/k9w3VFtxmxOoy0J7DLbB
+    pLn03MWVBTMDdepn0pdRT7FkWGxizxNGzOR5YCmyWD9H0NLf2IwYFMSRfS2OLvaS
+    JxeGTw/6GQprx3cfc9yQNg07Uc9NO2oLQgTR3ageqlq3pwKJBNUdqhOXCiKBxrbc
+    LFJqTqM5zEvGRWtJqO2wAypnyYjyq+hmDklealGkNA9w9SHMtLPCeyQDf2mcSAme
+    hrDvPYlfqIzVvis0a+zHQLTCSmNF1w9pZcDb2uU5Vt1uZyR6JZgcO8ynEusCAwEA
+    AQKCAgBX6zyDXS3948jbQWHnJKrhl8DN6QBWgbnJYH3Gbbi4wf8Ayh7V7IttuPg9
+    qehywhdSNgJFc8lqNf30eHf1aIDs41RPHkQ+WN7N8H+SigPN/EYgExG46knr0xHc
+    aaRL4W683sSsG6aQFtmxuK5XsLDKJkEolX7EIWCdbYF0ZSqlDxS4HtkVEmbI2pNC
+    pdKGBojdux7mt3UZ1IKG9GjhqEIggDNvII6sMSP+ODl1pA0piFaKXlVw4BCLquj0
+    obcqNzNqz31EetBcD2KJPg2bcNYNropMe6oNzHukpwZaggAFfN1owGiHXoKNlHo +
+    XeOz4s7HHWDTbHkyff5I9oGudgib1WYxG7m4AjKpKTxLxNKXcBEbVoflubuaucMZ
+    b/EQdkki0ERnhlEXvc0jhou7v/OMQFiPgnmIJcfkN9VESb66/DlvQqK/BvGNtLZC
+    aiQl25isBcEomjpuS7J0W3iWhUg0ibr2DvS3QmFCGx6SRepQ73bI/Hjnocd8C2TU
+    JKp+7ndUPkLseHE++F76GTvVtX4lreAHCTTrOYjUhZuB/TXMEIhl5z4z4ZTZzw7N
+    pLJVZMm87vpb5IJ+h1kA5iriEUs2tLYfz2CNdrtR8qfRnYxPart9ReqoMGu+6gRg
+    / 1zNZUhIA6ZeNgPECtesXC/DneUGVT5v50LjdiK1okePsi7PwQKCAQEA1Ot05Ynw
+    / 0Za9zgUD5dZbZ3mKhz7kIkUTrj8xJN/B7zb+qYILNyZpQOWwrBOb1IxHYcar2jS
+    cZJ53E1Kw6lQ6wqyWlb2opHbZrivnLi/odx+MZyXZ0VrskxobZHePd/StvcVAQxl
+    / hsbqE2vGiaSD8AKQB5RaSK2vvoEz1wNAQAi9eFyO3af4l3s/Qrb46lHaHtxgnw4
+    xdpIpWk60CNvLeYLKw/G2Eqsl+MHOAfbnJ4aBV5PIFkJOs/UuboS+tgHkr1MeFYq
+    R22E4x7IMlQvTLndW1LJYlqW3MFTAxyu8HfaagtkKm0exDYUwVhnBswoVCd8uL9u
+    DCEJ1UX9KGxmywKCAQEAyIsEPX6OpVRpcZ8PGLucMBqPvUsnZz6w6ckfR0a9rC8Q
+    jlqud8z8smTPVgkoE62cMIL8Shzl5ZIzcsrK4HAz8OM2zAF/A5LnHsJQj0jd5wgG
+    DnHKuWuzykYvLAKJTdZfc26Kw33aGdbPCwR2wECcvkjM+9x26p8psuzb+vwE4ve3
+    Pq6+ovy3XiW0SmjFRagsodhopDW8bjrF80dDqVWcynfVEijfZfJI1BaUyw+B0Rt1
+    8XYxs8P0mmjiSiE5MQk2f1ehlfXyrPQmbQj0rHDEfSve677J473/93av63w+BuMI
+    5XZ2R0B8pulZJjQnCSSKu4quZo7dZsQa0Aa/VhhgYQKCAQB9wnjwHvKWhMKz5I6M
+    yvNKOIo685VuwFibSs4ZeZj9RAKWYDzR6pZhjeYdJi+dtulFrIgJdRtfc4nAonJ3
+    cOlXeqDvlQ/l48q4OHuZUNH3U5nByeDvYWSEEndXyGGBIFOAOB5S2TTgyrgiR4gW
+    JRP+c4paZs3lEFjqIhh3NcKEhcUgf8GN97nl5V5V83T/WfvQbaEU1jReQFjKQoY3
+    a8Z+ULLmA1KKbEjXCYQ5BwMi1Ys/An4v+AboktrtvEb7nF+Uv3SMWzBrsfdcgtDy
+    USEC64EgMJy8GA+lYhaa7vUxGUmLeyD1ojAa6mqF7KYlsK5dTllvcboZNeZt7wHh
+    P23TAoIBAFa1RLAR+DsjtDOcQjq/Y1ipI10FEZRiVru+afe3bmr0LoReUPEbgGbh
+    j4PzkZBwkAepmsuwkvYfsH8Bj5Za7RpKI3cxbmltKuDxw0MwjkFGBthX+v8QwjvC
+    / MJalmNBPSP7t6Ou1o41gm+RDocxaJQdhgOf3wqypqTmJHbwYGyCDojbpTFzcxUR
+    2FIT2rezbxjLKPNXCJHgd5YoSej9Sz1/cnDXmz/I8hRBbzQdEFQJO4WbRQIkx627
+    i5vhoYjCIv4MNaFRJgwBxFuAc8nbOBmmzku/wirmC7ZDauy2W1s+7qnH/nvwNfU1
+    D4alJfueAR31aFKPksrMH4uyXygqggECggEBALn9AzuxQV3KlbtPwR6cY+67X0Mw
+    + BcayGligTs4bLSAJyD7npfUHcbwLljmykJpEF4dUvc+XQCXrhMuhrHfW/rQPHtj
+    QPmEXlytji5/Nu5xfCYKkHEVsMJrQP5l2cMa3aTlIWmLwI3UFMvIyUZ1lfelpMW /
+    d7wzjRHeuWkqUoyJMWEk3pw3uwpSeIzgP4KJXjDWfRnjM/bh1zeC9RRr75YqgTfP
+    5kZPFKfyUnl4NM2HbwPZTNNu7BDQ+BdyT5KfN5pqG7dlSuC1N89IAt2sQeQcSNal
+    Ko2U1TA/gWeEjPE95nQI1bJ/GZHEzQvnTkur8ZaFFmGAjPcHyPzEzSyQUxg =
+    -----END RSA PRIVATE KEY-----''',
     # "OAUTH2_VALIDATOR_CLASS": "oauth2_provider.oauth2_validators.OAuth2Validator",
     "OAUTH2_VALIDATOR_CLASS": "account.oauth2_validators.CustomOAuth2Validator",
     "OIDC_ID_TOKEN_EXPIRATION": 3600,
