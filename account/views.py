@@ -80,12 +80,6 @@ class CreateAccountView(View):
         if not email:
             messages.append('Email is required')
             return render(request, create_account_template, {'messages': messages})
-        else:
-            r = requests.get(
-                f"https://isitarealemail.com/api/email/validate?email={email}")
-            if r.json()['status'] != 'valid':
-                messages.append('Invalid email address')
-                return render(request, create_account_template, {'messages': messages})
 
         # Validate user input
         if not first_name:
