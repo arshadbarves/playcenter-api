@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'playcenter'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_163479004E0141CFAF5DB0EEED67597E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6DCF269DBC6A48C9A03FAC4CD0E9A156 }}
